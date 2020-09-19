@@ -268,7 +268,7 @@ but a simple keyword search for corona or related terms would not find these art
 
 **Part 3:**
 To examine another national security topic, we can search for articles that are important to the `cyberthreats` topic but do not contain the word `cyberthreats`.
-Thus, we can observe what topics that www.lawfareblog.com considers to be related to the national security topic you choose.
+Thus, we can observe what topics that www.lawfareblog.com considers to be related to this specific topic.
 
 ```
 $ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='cyberthreats' --search_query='-cyberthreats'
