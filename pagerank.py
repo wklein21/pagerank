@@ -9,6 +9,7 @@ import math
 import torch
 import gzip
 import csv
+
 import logging
 
 
@@ -97,13 +98,16 @@ class WebGraph():
         all other entries are set to 0.
         '''
         n = self.P.shape[0]
-
+        
         if query is None:
             v = torch.ones(n)
-
+        
         else:
             v = torch.zeros(n)
-            # FIXME: your code goes here
+            for i in range(n):
+                if url_satisfies_query(self._index_to_url(i), query):
+                    v[i] = 1
+            print(v)
            
         v_sum = torch.sum(v)
         assert(v_sum>0)
@@ -121,8 +125,7 @@ class WebGraph():
         '''
         with torch.no_grad():
             n = self.P.shape[0]
-            print("P=",self.P)
-            print("n=",n)
+
             # create variables if none given
             if v is None:
                 v = torch.Tensor([1/n]*n)
@@ -136,25 +139,26 @@ class WebGraph():
 
             # main loop
             x = x0
-            a = []
-            print("x.shape=",x.shape)
+            a = torch.ones(n)
             v = torch.unsqueeze(v,1)
-            print("v.shape=",v.shape)
-            z = x.t() @ v
-            print("z.shape=",v.shape)
             row_sums = torch.sparse.sum(self.P,1) # gives you a vector that each component is the sum of rows of P
-            print("rowsums=", row_sums)
+            #print("rowsums=", row_sums)
             for i in range(n):
                 if row_sums[i]==0:
                     a[i] = 1
                 else:
                     a[i] = 0
-
-            for k in max_iterations:   
-                x = x0   
-                return (alpha * x.t()) @ self.P + (((alpha*x) @ a) + (1 - alpha) @ v.t())
-
-            return x
+            #print("a.shape=",a.shape)
+            #print("P.shape=",self.P.shape)
+            for k in range(max_iterations):   
+                xold = x  
+                #print("firsthalf=",torch.sparse.mm(self.P.t(), (alpha * xold.t()).t()).t().shape)
+                #print("secondhalf=",((((alpha * xold.t()) * a)+ (1 - alpha)) * v.t()).shape)
+                x = (torch.sparse.mm(self.P.t(), (alpha * xold.t()).t()).t() + ((((alpha * xold.t()) * a)+ (1 - alpha)) * v.t())).t()
+                if abs(torch.norm(x) - torch.norm(xold)) < epsilon:
+                    break
+            #print("x.shape=",x.shape)
+            return x.squeeze()
 
 
     def search(self, pi, query='', max_results=10):
