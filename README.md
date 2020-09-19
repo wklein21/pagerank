@@ -189,89 +189,58 @@ The answer is that the P graph for www.lawfareblog.com naturally has a large eig
 but the modified graph does not have a large eigengap and so requires a small alpha for fast convergence.
 
 Changing the value of alpha also gives us very different pagerank rankings.
-For example, 
-```
-$ python3 pagerank_solution.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2
-INFO:root:rank=0 pagerank=3.4696e-01 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
-INFO:root:rank=1 pagerank=2.9521e-01 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
-INFO:root:rank=2 pagerank=2.9040e-01 url=www.lawfareblog.com/opening-statement-david-holmes
-INFO:root:rank=3 pagerank=1.5179e-01 url=www.lawfareblog.com/lawfare-podcast-ben-nimmo-whack-mole-game-disinformation
-INFO:root:rank=4 pagerank=1.5099e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1963
-INFO:root:rank=5 pagerank=1.5099e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1964
-INFO:root:rank=6 pagerank=1.5071e-01 url=www.lawfareblog.com/lawfare-podcast-week-was-impeachment
-INFO:root:rank=7 pagerank=1.4957e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1962
-INFO:root:rank=8 pagerank=1.4367e-01 url=www.lawfareblog.com/cyberlaw-podcast-mistrusting-google
-INFO:root:rank=9 pagerank=1.4240e-01 url=www.lawfareblog.com/lawfare-podcast-bonus-edition-gordon-sondland-vs-committee-no-bull
-
-$ python3 pagerank_solution.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2 --alpha=0.99999
-INFO:root:rank=0 pagerank=7.0149e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
-INFO:root:rank=1 pagerank=7.0149e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
-INFO:root:rank=2 pagerank=1.0552e-01 url=www.lawfareblog.com/cost-using-zero-days
-INFO:root:rank=3 pagerank=3.1755e-02 url=www.lawfareblog.com/lawfare-podcast-former-congressman-brian-baird-and-daniel-schuman-how-congress-can-continue-function
-INFO:root:rank=4 pagerank=2.2040e-02 url=www.lawfareblog.com/events
-INFO:root:rank=5 pagerank=1.6027e-02 url=www.lawfareblog.com/water-wars-increased-us-focus-indo-pacific
-INFO:root:rank=6 pagerank=1.6026e-02 url=www.lawfareblog.com/water-wars-drill-maybe-drill
-INFO:root:rank=7 pagerank=1.6023e-02 url=www.lawfareblog.com/water-wars-disjointed-operations-south-china-sea
-INFO:root:rank=8 pagerank=1.6020e-02 url=www.lawfareblog.com/water-wars-song-oil-and-fire
-INFO:root:rank=9 pagerank=1.6020e-02 url=www.lawfareblog.com/water-wars-sinking-feeling-philippine-china-relations
-```
-
 Which of these rankings is better is entirely subjective,
-and the only way to know if you have the "best" alpha for your application is to try several variations and see what is best.
-If large alphas are good for your application, you can see that there is a tradeoff between quality answers and algorithmic runtime.
+and the only way to determine the "best" alpha for any given application is to try several variations and see what is best.
+If large alphas are good for a particular application, there will be a tradeoff between quality answers and algorithmic runtime.
 
 ## Phase 2: the personalization vector
 
 The most interesting applications of pagerank involve the personalization vector.
 
 **Part 1:**
-Implement the `WebGraph.make_personalization_vector` function.
-This function enables the `--personalization_vector_query` command line argument,
-which provides an alternative method for searching by doing the filtering on the personalization vector.
+In this part, we will implement the `WebGraph.make_personalization_vector` function, 
+which enables the `--personalization_vector_query` command line argument,
+which in turn provides an alternative method for searching by doing the filtering on the personalization vector.
 
-If you've implemented the function correctly,
-you should get results similar to:
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona'
-INFO:root:rank=0 pagerank=6.3127e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
-INFO:root:rank=1 pagerank=6.3124e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
-INFO:root:rank=2 pagerank=1.5947e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
-INFO:root:rank=3 pagerank=1.2209e-01 url=www.lawfareblog.com/brexit-not-immune-coronavirus
-INFO:root:rank=4 pagerank=1.2209e-01 url=www.lawfareblog.com/rational-security-my-corona-edition
-INFO:root:rank=5 pagerank=9.3360e-02 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
-INFO:root:rank=6 pagerank=9.1920e-02 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
-INFO:root:rank=7 pagerank=9.1920e-02 url=www.lawfareblog.com/britains-coronavirus-response
-INFO:root:rank=8 pagerank=7.7770e-02 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
-INFO:root:rank=9 pagerank=7.2888e-02 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
+$ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona'
+INFO:root:rank=0 pagerank=8.8870e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
+INFO:root:rank=1 pagerank=8.8867e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
+INFO:root:rank=2 pagerank=1.8256e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
+INFO:root:rank=3 pagerank=1.4907e-01 url=www.lawfareblog.com/rational-security-my-corona-edition
+INFO:root:rank=4 pagerank=1.4907e-01 url=www.lawfareblog.com/brexit-not-immune-coronavirus
+INFO:root:rank=5 pagerank=1.0729e-01 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
+INFO:root:rank=6 pagerank=1.0199e-01 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
+INFO:root:rank=7 pagerank=1.0199e-01 url=www.lawfareblog.com/britains-coronavirus-response
+INFO:root:rank=8 pagerank=9.4298e-02 url=www.lawfareblog.com/lawfare-podcast-mom-and-dad-talk-clinical-trials-pandemic
+INFO:root:rank=9 pagerank=8.7207e-02 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
 ```
 
 Notice that these results are significantly different than when using the `--search_query` option:
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --search_query='corona'
-INFO:root:rank=0 pagerank=8.1320e-03 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
-INFO:root:rank=1 pagerank=7.7908e-03 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
-INFO:root:rank=2 pagerank=5.2262e-03 url=www.lawfareblog.com/livestream-house-oversight-committee-holds-hearing-government-coronavirus-response
-INFO:root:rank=3 pagerank=3.9584e-03 url=www.lawfareblog.com/britains-coronavirus-response
-INFO:root:rank=4 pagerank=3.8114e-03 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
-INFO:root:rank=5 pagerank=3.3973e-03 url=www.lawfareblog.com/paper-hearing-experts-debate-digital-contact-tracing-and-coronavirus-privacy-concerns
-INFO:root:rank=6 pagerank=3.3633e-03 url=www.lawfareblog.com/cyberlaw-podcast-how-israel-fighting-coronavirus
-INFO:root:rank=7 pagerank=3.3557e-03 url=www.lawfareblog.com/israeli-emergency-regulations-location-tracking-coronavirus-carriers
-INFO:root:rank=8 pagerank=3.2160e-03 url=www.lawfareblog.com/congress-needs-coronavirus-failsafe-its-too-late
-INFO:root:rank=9 pagerank=3.1036e-03 url=www.lawfareblog.com/why-congress-conducting-business-usual-face-coronavirus
+$ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --search_query='corona'
+INFO:root:rank=0 pagerank=1.1602e-01 url=www.lawfareblog.com/congress-needs-coronavirus-failsafe-its-too-late
+INFO:root:rank=1 pagerank=5.6372e-02 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
+INFO:root:rank=2 pagerank=5.0835e-02 url=www.lawfareblog.com/britains-coronavirus-response
+INFO:root:rank=3 pagerank=5.0485e-02 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
+INFO:root:rank=4 pagerank=4.8030e-02 url=www.lawfareblog.com/livestream-house-oversight-committee-holds-hearing-government-coronavirus-response
+INFO:root:rank=5 pagerank=4.7747e-02 url=www.lawfareblog.com/paper-hearing-experts-debate-digital-contact-tracing-and-coronavirus-privacy-concerns
+INFO:root:rank=6 pagerank=4.3730e-02 url=www.lawfareblog.com/why-congress-conducting-business-usual-face-coronavirus
+INFO:root:rank=7 pagerank=2.5820e-02 url=www.lawfareblog.com/israeli-emergency-regulations-location-tracking-coronavirus-carriers
+INFO:root:rank=8 pagerank=2.5463e-02 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
+INFO:root:rank=9 pagerank=1.9068e-02 url=www.lawfareblog.com/congressional-homeland-security-committees-seek-ways-support-state-federal-responses-coronavirus
 ```
-
-Which results are better?
-That depends on what you mean by "better."
-With the `--personalization_vector_query` option,
+Neither of these options is clearly better than the other:
+with the `--personalization_vector_query` option,
 a webpage is important only if other coronavirus webpages also think it's important;
 with the `--search_query` option,
 a webpage is important if any other webpage thinks it's important.
-You'll notice that in the later example, many of the webpages are about Congressional proceedings related to the coronavirus.
+In the latter example, many of the webpages are about Congressional proceedings related to the coronavirus.
 From a strictly coronavirus perspective, these are not very important webpages.
 But in the broader context of national security, these are very important webpages.
 
-Google engineers spend TONs of time fine-tuning their pagerank personalization vectors to remove spam webpages.
-Exactly how they do this is another one of their secrets that they don't publicly talk about.
+Fine-tuning pagerank personalization vectors to remove spam webpages is a substantial task for Google engineers, but
+exactly how they do this is another one of their secrets that they don't publicly talk about.
 
 **Part 2:**
 Another use of the `--personalization_vector_query` option is that we can find out what webpages are related to the coronavirus but don't directly mention the coronavirus.
@@ -280,53 +249,37 @@ This can be used to map out what types of topics are similar to the coronavirus.
 For example, the following query ranks all webpages by their `corona` importance,
 but removes webpages mentioning `corona` from the results.
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona' --search_query='-corona'
-INFO:root:rank=0 pagerank=6.3127e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
-INFO:root:rank=1 pagerank=6.3124e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
-INFO:root:rank=2 pagerank=1.5947e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
-INFO:root:rank=3 pagerank=9.3360e-02 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
-INFO:root:rank=4 pagerank=7.0277e-02 url=www.lawfareblog.com/fault-lines-foreign-policy-quarantined
-INFO:root:rank=5 pagerank=6.9713e-02 url=www.lawfareblog.com/lawfare-podcast-mom-and-dad-talk-clinical-trials-pandemic
-INFO:root:rank=6 pagerank=6.4944e-02 url=www.lawfareblog.com/limits-world-health-organization
-INFO:root:rank=7 pagerank=5.9492e-02 url=www.lawfareblog.com/chinatalk-dispatches-shanghai-beijing-and-hong-kong
-INFO:root:rank=8 pagerank=5.1245e-02 url=www.lawfareblog.com/us-moves-dismiss-case-against-company-linked-ira-troll-farm
-INFO:root:rank=9 pagerank=5.1245e-02 url=www.lawfareblog.com/livestream-house-armed-services-holds-hearing-national-security-challenges-north-and-south-america
+$ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona' --search_query='-corona'
+INFO:root:rank=0 pagerank=8.8870e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
+INFO:root:rank=1 pagerank=8.8867e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
+INFO:root:rank=2 pagerank=1.8256e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
+INFO:root:rank=3 pagerank=1.0729e-01 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
+INFO:root:rank=4 pagerank=9.4298e-02 url=www.lawfareblog.com/lawfare-podcast-mom-and-dad-talk-clinical-trials-pandemic
+INFO:root:rank=5 pagerank=7.9633e-02 url=www.lawfareblog.com/fault-lines-foreign-policy-quarantined
+INFO:root:rank=6 pagerank=7.5307e-02 url=www.lawfareblog.com/limits-world-health-organization
+INFO:root:rank=7 pagerank=6.8115e-02 url=www.lawfareblog.com/chinatalk-dispatches-shanghai-beijing-and-hong-kong
+INFO:root:rank=8 pagerank=6.4847e-02 url=www.lawfareblog.com/us-moves-dismiss-case-against-company-linked-ira-troll-farm
+INFO:root:rank=9 pagerank=6.4847e-02 url=www.lawfareblog.com/livestream-house-armed-services-holds-hearing-national-security-challenges-north-and-south-america
 ```
-You can see that there are many urls about concepts that are obviously related like "covid", "clinical trials", and "quarantine",
+There are many urls about concepts that are obviously related like "covid", "clinical trials", and "quarantine",
 but this algorithm also finds articles about Chinese propaganda and Trump's policy decisions.
 Both of these articles are highly relevant to coronavirus discussions,
 but a simple keyword search for corona or related terms would not find these articles.
 
 **Part 3:**
-You should experiment with a national security topic other than the coronavirus.
-For example, find out what articles are important to the `iran` topic but do not contain the word `iran`.
-Your goal should be to discover what topics that www.lawfareblog.com considers to be related to the national security topic you choose.
+To examine another national security topic, we can search for articles that are important to the `cyberthreats` topic but do not contain the word `cyberthreats`.
+Thus, we can observe what topics that www.lawfareblog.com considers to be related to the national security topic you choose.
 
-## Submission
-
-1. Create a new repo on github (not a fork of this repo).
-
-1. Push your changes to the `pagerank.py` file into your repo.
-
-1. Create a `README.md` file that contains the output of your program for each of the parts above.
-   You may format the file however you like,
-   and I recommend you choose something that recruiters will be impressed by.
-
-1. Get at least 5 stars on your repo.
-   (You made trade stars with other students in the class.)
-
-   Recruiters use github profiles to determine who to hire,
-   and pagerank is used to rank user profiles.
-   Links in this graph correspond to who has starred/followed who's repo.
-   By getting more stars on your repo, you'll be increasing your github pagerank, which increases the likelihood that recruiters will hire you.
-
-   In some sense, we are doing a "dual problem" to data mining by getting these stars.
-   Recruiters are using data mining to find out who the best people to recruit are,
-   and we are hacking their data mining algorithms by making those algorithms select you instead of someone else.
-
-   If you're interested in exploring this idea further, here's a python tutorial for extracting GitHub's social graph: https://www.oreilly.com/library/view/mining-the-social/9781449368180/ch07.html ; if you're interested in learning more about how recruiters use github profiles, read this Hacker News post: https://news.ycombinator.com/item?id=19413348
-
-1. Submit the url of your repo to sakai.
-
-1. In the sakai submission, state which tasks you were able to complete.
-   Each task is worth 2 points, and the homework is worth 14 points overall.
+```
+$ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='cyberthreats' --search_query='-cyberthreats'
+INFO:root:rank=0 pagerank=8.4916e-02 url=www.lawfareblog.com/lawfare-podcast-week-was-impeachment
+INFO:root:rank=1 pagerank=8.4916e-02 url=www.lawfareblog.com/lawfare-podcast-ben-nimmo-whack-mole-game-disinformation
+INFO:root:rank=2 pagerank=8.4916e-02 url=www.lawfareblog.com/lawfare-podcast-bonus-edition-gordon-sondland-vs-committee-no-bull
+INFO:root:rank=3 pagerank=8.4912e-02 url=www.lawfareblog.com/cyberlaw-podcast-mistrusting-google
+INFO:root:rank=4 pagerank=8.4912e-02 url=www.lawfareblog.com/rational-security-lonely-amigo-edition
+INFO:root:rank=5 pagerank=7.2040e-02 url=www.lawfareblog.com/lawfare-podcast-bonus-edition-vindman-williams-volker-and-morrison-vs-committee-no-bull        
+INFO:root:rank=6 pagerank=4.3756e-02 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
+INFO:root:rank=7 pagerank=4.0174e-02 url=www.lawfareblog.com/opening-statement-david-holmes
+INFO:root:rank=8 pagerank=4.0174e-02 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
+INFO:root:rank=9 pagerank=2.1689e-02 url=www.lawfareblog.com/summary-david-holmess-deposition-testimony
+```
