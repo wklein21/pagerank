@@ -1,20 +1,20 @@
 # Pagerank Project
 
-In this project, you will create a simple search engine for the website https://www.lawfareblog.com .
-This website provides legal analysis on US national security issues.
+In this document, we will walk through the creation of a simple search engine for the website https://www.lawfareblog.com, 
+a website that provides legal analysis on US national security issues.
 
-**Due date:** Sunday, 13 September at midnight
+## Phase 1: the power method
 
-## Task 1: the power method
-
-Implement the `WebGraph.power_method` function in `pagerank.py` for computing the pagerank vector.
+In this phase, we will implement the `WebGraph.power_method` function in `pagerank.py` for computing the pagerank vector.
 
 **Part 1:**
-To check that your implementation is working,
-you should run the program on the `small.csv.gz` graph which is the example graph from the *Deeper Inside Pagerank* paper.
+To verify that the implementation of the function is working,
+we run the program on the `small.csv.gz` graph, which is the example graph from the *Deeper Inside Pagerank* paper.
 For my implementation, I get the following output.
 ```
 $ python pagerank.py --data=./small.csv.gz --verbose
+DEBUG:root:computing indices
+DEBUG:root:computing values
 INFO:root:rank=0 pagerank=6.0257e-01 url=4
 INFO:root:rank=1 pagerank=4.6414e-01 url=6
 INFO:root:rank=2 pagerank=3.4544e-01 url=5
@@ -22,20 +22,14 @@ INFO:root:rank=3 pagerank=1.9498e-01 url=2
 INFO:root:rank=4 pagerank=9.9210e-02 url=3
 INFO:root:rank=5 pagerank=8.9347e-02 url=1
 ```
-Yours likely won't be identical, but it should be similar.
-In particular, the ranking of the urls should be the same order.
 
-The `--verbose` flag causes all of the lines beginning with `DEBUG` to be printed.
-By default, only lines beginning with `INFO` are printed.
+Note that the `--verbose` flag causes any lines beginning with `DEBUG` to be printed--by default,
+only lines beginning with `INFO` are printed.
 
 **Part 2:**
 The `pagerank.py` file has an option `--search_query`, which takes a string as a parameter.
-If this argument is used, then program returns all urls that match the query string sorted according to their pagerank.
+If this argument is used, then the program returns all urls that match the query string sorted according to their pagerank.
 Essentially, this gives us the most important pages on the blog related to our query.
-
-Again, you may not get the exact same results as me,
-but you should get similar results to the examples I've shown below.
-Verify that you do in fact get similar results.
 
 ```
 $ python pagerank.py --data=./lawfareblog.csv.gz --search_query='corona'
@@ -127,20 +121,70 @@ In general, it is a challenging open problem to remove spam from pagerank result
 and all current solutions rely on careful human tuning and still have lots of false positives and false negatives.
 
 **Part 4:**
-Recall from the reading that the runtime of pagerank depends heavily on the eigengap of the $\bar\bar P$ matrix,
-and that this eigengap is bounded by the alpha parameter.
+The runtime of pagerank depends heavily on the eigengap of the $\bar\bar P$ matrix,
+which is bounded by the alpha parameter.
 
-Run the following four commands:
+If we run the following four commands:
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose 
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose --alpha=0.99999
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2 --alpha=0.99999
-```
-You should notice that the last command takes considerably more iterations to compute the pagerank vector.
-(My code takes 685 iterations for this call, and about 10 iterations for all the others.)
+$ python pagerank.py --data=./lawfareblog.csv.gz --verbose 
+DEBUG:root:computing indices
+DEBUG:root:computing values
+INFO:root:rank=0 pagerank=8.4156e+00 url=www.lawfareblog.com/our-comments-policy
+INFO:root:rank=1 pagerank=8.4156e+00 url=www.lawfareblog.com/lawfare-job-board
+INFO:root:rank=2 pagerank=8.4156e+00 url=www.lawfareblog.com/litigation-documents-resources-related-travel-ban
+INFO:root:rank=3 pagerank=8.4156e+00 url=www.lawfareblog.com/subscribe-lawfare
+INFO:root:rank=4 pagerank=8.4156e+00 url=www.lawfareblog.com/support-lawfare
+INFO:root:rank=5 pagerank=8.4156e+00 url=www.lawfareblog.com/upcoming-events
+INFO:root:rank=6 pagerank=8.4156e+00 url=www.lawfareblog.com/snowden-revelations
+INFO:root:rank=7 pagerank=8.4156e+00 url=www.lawfareblog.com/about-lawfare-brief-history-term-and-site
+INFO:root:rank=8 pagerank=8.4156e+00 url=www.lawfareblog.com/topics
+INFO:root:rank=9 pagerank=8.4156e+00 url=www.lawfareblog.com/documents-related-mueller-investigation
 
-This begs the question does the second command (with the `--alpha` option but without the `--filter_ratio`) option not take a long time to run?
+$ python pagerank.py --data=./lawfareblog.csv.gz --verbose --alpha=0.99999
+DEBUG:root:computing indices
+DEBUG:root:computing values
+INFO:root:rank=0 pagerank=1.0624e+01 url=www.lawfareblog.com/litigation-documents-related-appointment-matthew-whitaker-acting-attorney-general
+INFO:root:rank=1 pagerank=1.0624e+01 url=www.lawfareblog.com/lawfare-job-board
+INFO:root:rank=2 pagerank=1.0624e+01 url=www.lawfareblog.com/litigation-documents-resources-related-travel-ban
+INFO:root:rank=3 pagerank=1.0624e+01 url=www.lawfareblog.com/subscribe-lawfare
+INFO:root:rank=4 pagerank=1.0624e+01 url=www.lawfareblog.com/about-lawfare-brief-history-term-and-site
+INFO:root:rank=5 pagerank=1.0624e+01 url=www.lawfareblog.com/our-comments-policy
+INFO:root:rank=6 pagerank=1.0624e+01 url=www.lawfareblog.com/upcoming-events
+INFO:root:rank=7 pagerank=1.0624e+01 url=www.lawfareblog.com/support-lawfare
+INFO:root:rank=8 pagerank=1.0624e+01 url=www.lawfareblog.com/snowden-revelations
+INFO:root:rank=9 pagerank=1.0624e+01 url=www.lawfareblog.com/topics
+
+$ python pagerank.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2
+DEBUG:root:computing indices
+DEBUG:root:computing values
+INFO:root:rank=0 pagerank=4.2773e+00 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
+INFO:root:rank=1 pagerank=2.7717e+00 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
+INFO:root:rank=2 pagerank=2.7533e+00 url=www.lawfareblog.com/opening-statement-david-holmes
+INFO:root:rank=3 pagerank=1.8721e+00 url=www.lawfareblog.com/senate-examines-threats-homeland
+INFO:root:rank=4 pagerank=1.7418e+00 url=www.lawfareblog.com/what-make-first-day-impeachment-hearings
+INFO:root:rank=5 pagerank=1.7411e+00 url=www.lawfareblog.com/livestream-house-armed-services-committee-hearing-f-35-program
+INFO:root:rank=6 pagerank=1.7348e+00 url=www.lawfareblog.com/whats-house-resolution-impeachment
+INFO:root:rank=7 pagerank=1.6384e+00 url=www.lawfareblog.com/congress-us-policy-toward-syria-and-turkey-overview-recent-hearings
+INFO:root:rank=8 pagerank=1.5597e+00 url=www.lawfareblog.com/summary-david-holmess-deposition-testimony
+INFO:root:rank=9 pagerank=9.1265e-01 url=www.lawfareblog.com/events
+
+$ python pagerank.py --data=./lawfareblog.csv.gz --verbose --filter_ratio=0.2 --alpha=0.99999
+DEBUG:root:computing indices
+DEBUG:root:computing values
+INFO:root:rank=0 pagerank=4.7947e+01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
+INFO:root:rank=1 pagerank=4.7947e+01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
+INFO:root:rank=2 pagerank=7.2709e+00 url=www.lawfareblog.com/cost-using-zero-days
+INFO:root:rank=3 pagerank=2.1691e+00 url=www.lawfareblog.com/lawfare-podcast-former-congressman-brian-baird-and-daniel-schuman-how-congress-can-continue-function
+INFO:root:rank=4 pagerank=1.4214e+00 url=www.lawfareblog.com/events
+INFO:root:rank=5 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-increased-us-focus-indo-pacific
+INFO:root:rank=6 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-drill-maybe-drill
+INFO:root:rank=7 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-disjointed-operations-south-china-sea
+INFO:root:rank=8 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-us-china-divide-shangri-la
+INFO:root:rank=9 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-song-oil-and-fire
+```
+We notice that the last command takes considerably more iterations to compute the pagerank vector.
+
+This begs the question: does the second command (with the `--alpha` option but without the `--filter_ratio`) option not take a long time to run?
 The answer is that the P graph for www.lawfareblog.com naturally has a large eigengap and so is fast to compute for all alpha values,
 but the modified graph does not have a large eigengap and so requires a small alpha for fast convergence.
 
@@ -175,9 +219,8 @@ INFO:root:rank=9 pagerank=1.6020e-02 url=www.lawfareblog.com/water-wars-sinking-
 Which of these rankings is better is entirely subjective,
 and the only way to know if you have the "best" alpha for your application is to try several variations and see what is best.
 If large alphas are good for your application, you can see that there is a tradeoff between quality answers and algorithmic runtime.
-We'll be exploring this tradeoff more formally in class when we incorporate statistics into our discussion.
 
-## Task 2: the personalization vector
+## Phase 2: the personalization vector
 
 The most interesting applications of pagerank involve the personalization vector.
 
