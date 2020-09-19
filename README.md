@@ -14,39 +14,13 @@ To check that your implementation is working,
 you should run the program on the `small.csv.gz` graph which is the example graph from the *Deeper Inside Pagerank* paper.
 For my implementation, I get the following output.
 ```
-$ python3 pagerank.py --data=./small.csv.gz --verbose
-DEBUG:root:computing indices
-DEBUG:root:computing values
-DEBUG:root:i=0 accuracy=2.5629e-01
-DEBUG:root:i=1 accuracy=1.1841e-01
-DEBUG:root:i=2 accuracy=7.0701e-02
-DEBUG:root:i=3 accuracy=3.1815e-02
-DEBUG:root:i=4 accuracy=2.0497e-02
-DEBUG:root:i=5 accuracy=1.0108e-02
-DEBUG:root:i=6 accuracy=6.3716e-03
-DEBUG:root:i=7 accuracy=3.4228e-03
-DEBUG:root:i=8 accuracy=2.0879e-03
-DEBUG:root:i=9 accuracy=1.1750e-03
-DEBUG:root:i=10 accuracy=7.0131e-04
-DEBUG:root:i=11 accuracy=4.0321e-04
-DEBUG:root:i=12 accuracy=2.3800e-04
-DEBUG:root:i=13 accuracy=1.3812e-04
-DEBUG:root:i=14 accuracy=8.1083e-05
-DEBUG:root:i=15 accuracy=4.7251e-05
-DEBUG:root:i=16 accuracy=2.7704e-05
-DEBUG:root:i=17 accuracy=1.6164e-05
-DEBUG:root:i=18 accuracy=9.4778e-06
-DEBUG:root:i=19 accuracy=5.5066e-06
-DEBUG:root:i=20 accuracy=3.2042e-06
-DEBUG:root:i=21 accuracy=1.8612e-06
-DEBUG:root:i=22 accuracy=1.1283e-06
-DEBUG:root:i=23 accuracy=6.1907e-07
-INFO:root:rank=0 pagerank=6.6270e-01 url=4
-INFO:root:rank=1 pagerank=5.2179e-01 url=6
-INFO:root:rank=2 pagerank=4.1434e-01 url=5
-INFO:root:rank=3 pagerank=2.3175e-01 url=2
-INFO:root:rank=4 pagerank=1.8590e-01 url=3
-INFO:root:rank=5 pagerank=1.6917e-01 url=1
+$ python pagerank.py --data=./small.csv.gz --verbose
+INFO:root:rank=0 pagerank=6.0257e-01 url=4
+INFO:root:rank=1 pagerank=4.6414e-01 url=6
+INFO:root:rank=2 pagerank=3.4544e-01 url=5
+INFO:root:rank=3 pagerank=1.9498e-01 url=2
+INFO:root:rank=4 pagerank=9.9210e-02 url=3
+INFO:root:rank=5 pagerank=8.9347e-02 url=1
 ```
 Yours likely won't be identical, but it should be similar.
 In particular, the ranking of the urls should be the same order.
@@ -64,41 +38,41 @@ but you should get similar results to the examples I've shown below.
 Verify that you do in fact get similar results.
 
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='corona'
-INFO:root:rank=0 pagerank=1.0038e-03 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
-INFO:root:rank=1 pagerank=8.9224e-04 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
-INFO:root:rank=2 pagerank=7.0390e-04 url=www.lawfareblog.com/britains-coronavirus-response
-INFO:root:rank=3 pagerank=6.9153e-04 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
-INFO:root:rank=4 pagerank=6.7041e-04 url=www.lawfareblog.com/israeli-emergency-regulations-location-tracking-coronavirus-carriers
-INFO:root:rank=5 pagerank=6.6256e-04 url=www.lawfareblog.com/why-congress-conducting-business-usual-face-coronavirus
-INFO:root:rank=6 pagerank=6.5046e-04 url=www.lawfareblog.com/congressional-homeland-security-committees-seek-ways-support-state-federal-responses-coronavirus
-INFO:root:rank=7 pagerank=6.3620e-04 url=www.lawfareblog.com/paper-hearing-experts-debate-digital-contact-tracing-and-coronavirus-privacy-concerns
-INFO:root:rank=8 pagerank=6.1248e-04 url=www.lawfareblog.com/house-subcommittee-voices-concerns-over-us-management-coronavirus
-INFO:root:rank=9 pagerank=6.0187e-04 url=www.lawfareblog.com/livestream-house-oversight-committee-holds-hearing-government-coronavirus-response
+$ python pagerank.py --data=./lawfareblog.csv.gz --search_query='corona'
+INFO:root:rank=0 pagerank=4.5861e-03 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
+INFO:root:rank=1 pagerank=4.0460e-03 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
+INFO:root:rank=2 pagerank=2.6116e-03 url=www.lawfareblog.com/britains-coronavirus-response
+INFO:root:rank=3 pagerank=2.5390e-03 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
+INFO:root:rank=4 pagerank=2.3557e-03 url=www.lawfareblog.com/israeli-emergency-regulations-location-tracking-coronavirus-carriers
+INFO:root:rank=5 pagerank=2.2895e-03 url=www.lawfareblog.com/why-congress-conducting-business-usual-face-coronavirus
+INFO:root:rank=6 pagerank=2.2727e-03 url=www.lawfareblog.com/livestream-house-oversight-committee-holds-hearing-government-coronavirus-response
+INFO:root:rank=7 pagerank=2.2520e-03 url=www.lawfareblog.com/congressional-homeland-security-committees-seek-ways-support-state-federal-responses-coronavirus
+INFO:root:rank=8 pagerank=2.1878e-03 url=www.lawfareblog.com/paper-hearing-experts-debate-digital-contact-tracing-and-coronavirus-privacy-concerns
+INFO:root:rank=9 pagerank=2.0339e-03 url=www.lawfareblog.com/cyberlaw-podcast-how-israel-fighting-coronavirus
 
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='trump'
-INFO:root:rank=0 pagerank=5.7826e-03 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
-INFO:root:rank=1 pagerank=5.2338e-03 url=www.lawfareblog.com/document-trump-revokes-obama-executive-order-counterterrorism-strike-casualty-reporting
-INFO:root:rank=2 pagerank=5.1297e-03 url=www.lawfareblog.com/trump-administrations-worrying-new-policy-israeli-settlements
-INFO:root:rank=3 pagerank=4.6599e-03 url=www.lawfareblog.com/dc-circuit-overrules-district-courts-due-process-ruling-qasim-v-trump
-INFO:root:rank=4 pagerank=4.5934e-03 url=www.lawfareblog.com/donald-trump-and-politically-weaponized-executive-branch
-INFO:root:rank=5 pagerank=4.3071e-03 url=www.lawfareblog.com/how-trumps-approach-middle-east-ignores-past-future-and-human-condition
-INFO:root:rank=6 pagerank=4.0935e-03 url=www.lawfareblog.com/why-trump-cant-buy-greenland
-INFO:root:rank=7 pagerank=3.7591e-03 url=www.lawfareblog.com/oral-argument-summary-qassim-v-trump
-INFO:root:rank=8 pagerank=3.4509e-03 url=www.lawfareblog.com/dc-circuit-court-denies-trump-rehearing-mazars-case
-INFO:root:rank=9 pagerank=3.4484e-03 url=www.lawfareblog.com/second-circuit-rules-mazars-must-hand-over-trump-tax-returns-new-york-prosecutors
+$ python pagerank.py --data=./lawfareblog.csv.gz --search_query='trump'
+INFO:root:rank=0 pagerank=6.6243e-02 url=www.lawfareblog.com/donald-trump-and-politically-weaponized-executive-branch
+INFO:root:rank=1 pagerank=6.0194e-02 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
+INFO:root:rank=2 pagerank=3.4969e-02 url=www.lawfareblog.com/trump-administrations-worrying-new-policy-israeli-settlements
+INFO:root:rank=3 pagerank=3.2193e-02 url=www.lawfareblog.com/document-trump-revokes-obama-executive-order-counterterrorism-strike-casualty-reporting        
+INFO:root:rank=4 pagerank=3.0971e-02 url=www.lawfareblog.com/dc-circuit-overrules-district-courts-due-process-ruling-qasim-v-trump
+INFO:root:rank=5 pagerank=2.8460e-02 url=www.lawfareblog.com/how-trumps-approach-middle-east-ignores-past-future-and-human-condition
+INFO:root:rank=6 pagerank=2.5252e-02 url=www.lawfareblog.com/why-trump-cant-buy-greenland
+INFO:root:rank=7 pagerank=2.2457e-02 url=www.lawfareblog.com/oral-argument-summary-qassim-v-trump
+INFO:root:rank=8 pagerank=2.1462e-02 url=www.lawfareblog.com/dc-circuit-court-denies-trump-rehearing-mazars-case
+INFO:root:rank=9 pagerank=2.1103e-02 url=www.lawfareblog.com/second-circuit-rules-mazars-must-hand-over-trump-tax-returns-new-york-prosecutors
 
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='iran'
-INFO:root:rank=0 pagerank=4.5746e-03 url=www.lawfareblog.com/praise-presidents-iran-tweets
-INFO:root:rank=1 pagerank=4.4174e-03 url=www.lawfareblog.com/how-us-iran-tensions-could-disrupt-iraqs-fragile-peace
-INFO:root:rank=2 pagerank=2.6928e-03 url=www.lawfareblog.com/cyber-command-operational-update-clarifying-june-2019-iran-operation
-INFO:root:rank=3 pagerank=1.9391e-03 url=www.lawfareblog.com/aborted-iran-strike-fine-line-between-necessity-and-revenge
-INFO:root:rank=4 pagerank=1.5452e-03 url=www.lawfareblog.com/parsing-state-departments-letter-use-force-against-iran
-INFO:root:rank=5 pagerank=1.5357e-03 url=www.lawfareblog.com/iranian-hostage-crisis-and-its-effect-american-politics
-INFO:root:rank=6 pagerank=1.5258e-03 url=www.lawfareblog.com/announcing-united-states-and-use-force-against-iran-new-lawfare-e-book
-INFO:root:rank=7 pagerank=1.4221e-03 url=www.lawfareblog.com/us-names-iranian-revolutionary-guard-terrorist-organization-and-sanctions-international-criminal
-INFO:root:rank=8 pagerank=1.1788e-03 url=www.lawfareblog.com/iran-shoots-down-us-drone-domestic-and-international-legal-implications
-INFO:root:rank=9 pagerank=1.1463e-03 url=www.lawfareblog.com/israel-iran-syria-clash-and-law-use-force
+$ python pagerank.py --data=./lawfareblog.csv.gz --search_query='iran'
+INFO:root:rank=0 pagerank=6.6131e-02 url=www.lawfareblog.com/praise-presidents-iran-tweets
+INFO:root:rank=1 pagerank=2.9199e-02 url=www.lawfareblog.com/how-us-iran-tensions-could-disrupt-iraqs-fragile-peace
+INFO:root:rank=2 pagerank=1.7709e-02 url=www.lawfareblog.com/cyber-command-operational-update-clarifying-june-2019-iran-operation
+INFO:root:rank=3 pagerank=1.4604e-02 url=www.lawfareblog.com/aborted-iran-strike-fine-line-between-necessity-and-revenge
+INFO:root:rank=4 pagerank=8.4512e-03 url=www.lawfareblog.com/iranian-hostage-crisis-and-its-effect-american-politics
+INFO:root:rank=5 pagerank=8.3989e-03 url=www.lawfareblog.com/parsing-state-departments-letter-use-force-against-iran
+INFO:root:rank=6 pagerank=8.2581e-03 url=www.lawfareblog.com/announcing-united-states-and-use-force-against-iran-new-lawfare-e-book
+INFO:root:rank=7 pagerank=8.0561e-03 url=www.lawfareblog.com/trump-moves-cut-irans-oil-revenues-whats-his-endgame
+INFO:root:rank=8 pagerank=7.1939e-03 url=www.lawfareblog.com/us-names-iranian-revolutionary-guard-terrorist-organization-and-sanctions-international-criminal
+INFO:root:rank=9 pagerank=5.9405e-03 url=www.lawfareblog.com/iran-shoots-down-us-drone-domestic-and-international-legal-implications
 ```
 
 **Part 3:**
@@ -108,44 +82,38 @@ These pages therefore have a large pagerank.
 We can get a list of the pages with the largest pagerank by running
 
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz
-INFO:root:rank=0 pagerank=2.8741e-01 url=www.lawfareblog.com/lawfare-job-board
-INFO:root:rank=1 pagerank=2.8741e-01 url=www.lawfareblog.com/masthead
-INFO:root:rank=2 pagerank=2.8741e-01 url=www.lawfareblog.com/litigation-documents-related-appointment-matthew-whitaker-acting-attorney-general
-INFO:root:rank=3 pagerank=2.8741e-01 url=www.lawfareblog.com/documents-related-mueller-investigation
-INFO:root:rank=4 pagerank=2.8741e-01 url=www.lawfareblog.com/topics
-INFO:root:rank=5 pagerank=2.8741e-01 url=www.lawfareblog.com/about-lawfare-brief-history-term-and-site
-INFO:root:rank=6 pagerank=2.8741e-01 url=www.lawfareblog.com/snowden-revelations
-INFO:root:rank=7 pagerank=2.8741e-01 url=www.lawfareblog.com/support-lawfare
-INFO:root:rank=8 pagerank=2.8741e-01 url=www.lawfareblog.com/upcoming-events
-INFO:root:rank=9 pagerank=2.8741e-01 url=www.lawfareblog.com/our-comments-policy
+$ python pagerank.py --data=./lawfareblog.csv.gz
+INFO:root:rank=0 pagerank=8.4156e+00 url=www.lawfareblog.com/our-comments-policy
+INFO:root:rank=1 pagerank=8.4156e+00 url=www.lawfareblog.com/lawfare-job-board
+INFO:root:rank=2 pagerank=8.4156e+00 url=www.lawfareblog.com/litigation-documents-resources-related-travel-ban
+INFO:root:rank=3 pagerank=8.4156e+00 url=www.lawfareblog.com/subscribe-lawfare
+INFO:root:rank=4 pagerank=8.4156e+00 url=www.lawfareblog.com/support-lawfare
+INFO:root:rank=5 pagerank=8.4156e+00 url=www.lawfareblog.com/upcoming-events
+INFO:root:rank=6 pagerank=8.4156e+00 url=www.lawfareblog.com/snowden-revelations
+INFO:root:rank=7 pagerank=8.4156e+00 url=www.lawfareblog.com/about-lawfare-brief-history-term-and-site
+INFO:root:rank=8 pagerank=8.4156e+00 url=www.lawfareblog.com/topics
+INFO:root:rank=9 pagerank=8.4156e+00 url=www.lawfareblog.com/documents-related-mueller-investigation
 ```
 
-These pages are not very interesting, however, because they are not articles.
-How can we find the most important articles?
-The answer is to modify the P matrix by removing all links to non-article pages.
+To find the most important articles, we can modify the P matrix by removing all links to non-article pages.
 
-How do we know if a link is a non-article page?
-This is a hard question to answer with 100% accuracy,
-but there are many methods that get us most of the way there.
-An easy method is to remove all pages that have "too many" links.
+Although it is difficult to address with 100% accuracy, one way we can find whether a link is a non-article
+page is to remove all pages that have "too many" links.
+
 The `--filter_ratio` argument removes all pages that have more links than the specified fraction.
-(If that short explanation doesn't make sense, that's okay.
-You can either read the source for details or just accept that the option does magic.)
-
 Using this option, we can estimate the most important articles on the domain with the following command:
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2
-INFO:root:rank=0 pagerank=3.4696e-01 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
-INFO:root:rank=1 pagerank=2.9521e-01 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
-INFO:root:rank=2 pagerank=2.9040e-01 url=www.lawfareblog.com/opening-statement-david-holmes
-INFO:root:rank=3 pagerank=1.5179e-01 url=www.lawfareblog.com/lawfare-podcast-ben-nimmo-whack-mole-game-disinformation
-INFO:root:rank=4 pagerank=1.5099e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1963
-INFO:root:rank=5 pagerank=1.5099e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1964
-INFO:root:rank=6 pagerank=1.5071e-01 url=www.lawfareblog.com/lawfare-podcast-week-was-impeachment
-INFO:root:rank=7 pagerank=1.4957e-01 url=www.lawfareblog.com/todays-headlines-and-commentary-1962
-INFO:root:rank=8 pagerank=1.4367e-01 url=www.lawfareblog.com/cyberlaw-podcast-mistrusting-google
-INFO:root:rank=9 pagerank=1.4240e-01 url=www.lawfareblog.com/lawfare-podcast-bonus-edition-gordon-sondland-vs-committee-no-bull
+$ python pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2
+INFO:root:rank=0 pagerank=4.2773e+00 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
+INFO:root:rank=1 pagerank=2.7717e+00 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
+INFO:root:rank=2 pagerank=2.7533e+00 url=www.lawfareblog.com/opening-statement-david-holmes
+INFO:root:rank=3 pagerank=1.8721e+00 url=www.lawfareblog.com/senate-examines-threats-homeland
+INFO:root:rank=4 pagerank=1.7418e+00 url=www.lawfareblog.com/what-make-first-day-impeachment-hearings
+INFO:root:rank=5 pagerank=1.7411e+00 url=www.lawfareblog.com/livestream-house-armed-services-committee-hearing-f-35-program
+INFO:root:rank=6 pagerank=1.7348e+00 url=www.lawfareblog.com/whats-house-resolution-impeachment
+INFO:root:rank=7 pagerank=1.6384e+00 url=www.lawfareblog.com/congress-us-policy-toward-syria-and-turkey-overview-recent-hearings
+INFO:root:rank=8 pagerank=1.5597e+00 url=www.lawfareblog.com/summary-david-holmess-deposition-testimony
+INFO:root:rank=9 pagerank=9.1265e-01 url=www.lawfareblog.com/events
 ```
 
 When Google calculates their P matrix for the web,
