@@ -3,6 +3,12 @@
 In this document, we will walk through the creation of a simple search engine for the website https://www.lawfareblog.com, 
 a website that provides legal analysis on US national security issues.
 
+
+## NOTE: Updates on 12/06/20
+
+An updated page rank vector computation method was created using both pagerank and word embeddings to find high quality results. The new model uses the keyword as well as the five most similar words, as found from the 'glove-twitter-25' model, to conduct its search. The previous results were re-generated from applying the new method in 'pagerank.py' to the website "lawfareblog.com", and are given below. 
+
+
 ## Phase 1: the power method
 
 In this phase, we will implement the `WebGraph.power_method` function in `pagerank.py` for computing the pagerank vector.
